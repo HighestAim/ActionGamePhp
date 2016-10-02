@@ -1,0 +1,1 @@
+$conn = new PDO($params['db.conn'], $params['db.user'], $params['db.pass']);
