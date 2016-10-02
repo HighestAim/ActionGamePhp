@@ -10,6 +10,7 @@ $full_table =  mysqli_fetch_all($query,MYSQLI_NUM);
 
 foreach($full_table as $item)
 {
-	echo $item[0];
+	var_dump( $item) ;
+    echo "\n";
 }
 ?>
