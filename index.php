@@ -1,80 +1,239 @@
 ﻿<?php
-
-$sql_1 = "SELECT login,password,name FROM User";
-$sql_2 = "SELECT level,score FROM Mark";
-$sql_3 = "SELECT coin,crystal,point FROM Currency";
+include 'model/sendJsone.php';
 
 	$db = new PDO($params['ActionGameDB'],
 		$params[''],
 		$params['']);
 
-	$stmt_1 = db->query($sql_1);
-	$stmt_2 = db->query($sql_2);
-	$stmt_3 = db->query($sql_3);
 
-	$obj_1 = $stmt_1->fetch(PDO::FETCH_CLASS,'USER');//for Select
-	$obj_2 = $stmt_2->fetch(PDO::FETCH_CLASS,'Mark');//for Select
-	$obj_3 = $stmt_3->fetch(PDO::FETCH_CLASS,'Currency');//for Select
 
+	/*$url = 'https://example/json/exam.php'//url receive into
+	$jsondata = file_get_contents($url);
+	$json = json_decode($jsondata,true);
+	*/
 
 	$login = $_GET["login"]; 
 	$password = $_GET["password"];
-	
-if($login!=null && $password!=null){
-		
-		$name = $_GET["name"];
-		$bool = false;
+	$name = $_GET["name"];
 
-			if($name != null){	
-				foreach ($obj_1 as $user) {
-					if($user-> name == $name) {
-						$bool = true;	
+//first registration
+function first_registration($login,$password,$name){
+
+	$sql_1 = "SELECT login,password,name FROM User";
+	$stmt_1 = db->query($sql_1);
+	$obj_1 = $stmt_1->fetch(PDO::FETCH_CLASS,'USER');
+
+	$decodedPassword = json_decode($password);
+	if($login!=null && $decodedPassword!=null && $name !=null){
+		$bool = false;
+				foreach ($obj_1 as $user1) {
+					if ($user1-> login != $login && $user1-> password != $decodedPassword && $user1-> name) {
+						bool = true;
 					}
 				}
-			}
-			else
-			{
-				echo "ERROR name is null";
-			}
 
-		$coin = $_GET["coin"];
-			if($coin != null){
-				
+			if ($bool == true) {
+				$query_user = "INSERT INTO USER(login,password,name) VALUES($login,$password,$name)";///DELETE & UPDATE
+						//add level coin crystle point level score friend
+						//$query_Mark = "INSERT INTO Mark() VALUES($level,$score)";
+						$result = $db->exec($query_user);
+							if ($result === false) {
+								# code...
+							}
+							else{
+								$json_data = array ('login'=>$login,'password'=>$password,"name"=>$name));
+								$url = '';
+								setdJson($json_data,$url);
+								return true;
+							}	
 			}
-		$crystal = $_GET["crystal"];
-			if($crystal != null){
-				
-			}
-		$point = $_GET["point"];
-			if($point != null){
-				
-			}
-		$level = $_GET["level"];
-			if($level != null){
-				
-			}
-		$score = $_GET["score"];
-			if($score != null){
-				
-			}
-
-				foreach ($obj_1 as $user1) {
-					if ($user1-> login != $login && $user1-> password != $password ) {
-						$sql = "INSERT INTO USER(login,password) VALUES($login,$password)";///DELETE & UPDATE
-						$result = $db->exec($sql);
-						if ($result === false) {
-							# code...
-						}
-						return;
-					}
-					else{
-						$sql = "UPDATE USER(login,password) Set login = $login,password = $password";
-						$result = $db->exec($sql);
-						//.................
-					}
+			else{
+				return false;
 			}
 		
+	}
+	else{
+		return false;
+	}
+
 }
+
+	$coin = $_GET["coin"];
+	$crystal = $_GET["crystal"];
+	$point = $_GET["point"];
+
+function add_crystal_coin_point($login,$password){
+
+	$sql_1 = "SELECT login,password FROM User";
+	$stmt_1 = db->query($sql_1);
+	$obj_1 = $stmt_1->fetch(PDO::FETCH_CLASS,'USER');
+
+	$decodedPassword = json_decode($password);
+
+	if($login!=null && $decodedPassword!=null){
+
+			$bool = false;
+				foreach ($obj_1 as $user1) {
+					if ($user1-> login == $login && $user1-> password == $decodedPassword) {
+						bool = true;
+					}
+				}
+			if($bool == true){
+				// query add coin,crystal,point
+				$result = $db->exec($query_Curency);
+
+				if ($result === false) {
+					# code...
+				}
+				else{
+						//return value
+					}	
+			}
+
+	}
+}
+
+
+function add_level_score($login,$password){
+
+}
+
+
+function  getPoint($login,$password)){
+
+	$sql_1 = "SELECT login,password FROM User";
+	$stmt_1 = db->query($sql_1);
+	$obj_1 = $stmt_1->fetch(PDO::FETCH_CLASS,'USER');
+
+		$decodedPassword = json_decode($password);
+
+		if($login!=null && $decodedPassword!=null){
+			$bool = false;
+			foreach ($obj_1 as $user1) {
+					if ($user1-> login == $login && $user1-> password == $decodedPassword) {
+						bool = true;
+					}
+				}
+			if ($bool == true) {
+					//query getPoit
+				$result = $db->exec($query_Curency);
+					if ($result === false){
+						# code...
+					}
+					else{
+						$sql_query_point = "SELECT point FROM Currency";
+						$stmt_point = db->query($sql_query_point);
+						$obj_point = $stmt_point->fetch(PDO::FETCH_CLASS,'Currency');
+
+						$json_data = array ('point'=>$point);
+						$url = '';
+						setdJson($json_data,$url);
+						return true;
+					}	
+			}
+			else{
+				echo "login and password not found";
+				return false;
+			}
+
+		}
+		else{
+			echo "login or password not correct";
+			return false;
+		}
+}
+
+function getCoin($login,$password)){
+
+	$sql_1 = "SELECT login,password FROM User";
+	$stmt_1 = db->query($sql_1);
+	$obj_1 = $stmt_1->fetch(PDO::FETCH_CLASS,'USER');
+
+	$decodedPassword = json_decode($password);
+
+		if($login!=null && $decodedPassword!=null){
+			$bool = false;
+			foreach ($obj_1 as $user1) {
+					if ($user1-> login == $login && $user1-> password == $decodedPassword) {
+						bool = true;
+					}
+				}
+			if ($bool == true) {
+				//get Coin
+				$result = $db->exec($query_Curency);
+					if ($result === false){
+						# code...
+					}
+					else{
+						$sql_coin = "SELECT coin FROM Currency";
+						$stmt_coin = db->query($sql_coin);
+						$obj_coin = $stmt_coin->fetch(PDO::FETCH_CLASS,'Currency');//for Select
+
+						$json_data = array ('point'=>$point);
+						$url = '';
+						setdJson($json_data,$url);
+						return true;
+					}	
+			}
+			else{
+				echo "login and password not found";
+				return false;
+			}
+
+		}
+		else{
+			echo "login or password not correct";
+			return false;
+		}
+
+}
+function getCrystle($login,$password)){
+
+	$sql_1 = "SELECT login,password FROM User";
+	$stmt_1 = db->query($sql_1);
+	$obj_1 = $stmt_1->fetch(PDO::FETCH_CLASS,'USER');
+
+		$decodedPassword = json_decode($password);
+
+		if($login!=null && $decodedPassword!=null){
+			$bool = false;
+			foreach ($obj_1 as $user1) {
+					if ($user1-> login == $login && $user1-> password == $decodedPassword) {
+						bool = true;
+					}
+				}
+			if ($bool == true) {
+				//get Coin
+				$result = $db->exec($query_Curency);
+					if ($result === false){
+						# code...
+					}
+					else{
+						$sql_crystle = "SELECT crystal FROM Currency";
+						$stmt_crystle = db->query($sql_crystle);
+						$obj_crystle = $stmt_crystle->fetch(PDO::FETCH_CLASS,'Currency');
+
+						$json_data = array ('point'=>$point);
+						$url = '';
+						setdJson($json_data,$url);
+						return true;
+					}	
+			}
+			else{
+				echo "login and password not found";
+				return false;
+			}
+
+		}
+		else{
+			echo "login or password not correct";
+			return false;
+		}
+
+}
+
+
+
 	
 	
 
