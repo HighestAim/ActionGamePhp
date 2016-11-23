@@ -8,27 +8,6 @@
 
         public function __construct() { }
 
-        /*
-        public function __construct($id, $coin, $crystal, $point, $regDate, $userId)
-        {
-            $this->id = $id;
-            $this->coin = $coin;
-            $this->crystal = $crystal;
-            $this->point = $point;
-            $this->regDate = $regDate;
-            $this->userId = $userId;
-        } 
-        
-        public function __construct($coin, $crystal, $point, $regDate, $userId)
-        {
-            $this->coin = $coin;
-            $this->crystal = $crystal;
-            $this->point = $point;
-            $this->regDate = $regDate;
-            $this->userId = $userId;
-        } 
-*/
-
         public function showInfo(){
             echo '<p>'. $this->id .' : '. $this->coin .' : '. $this->crystal .' : '. $this->point .' : '. $this->userId .' : '. $this->regDate .'</p>'; 
         } 
@@ -40,6 +19,22 @@
                 $obj = $stmt->fetchALL(PDO::FETCH_CLASS, get_class($this)); 
                 
                 return $obj;
+        }
+        public static function getAll($userId)
+        {
+            $conn = db::connect();
+            $arrayName = -1;
+            $stmt = $conn->query("SELECT coin, crystal, point FROM Currency WHERE Currency.userId = '$userId' ORDER BY regDate DESC LIMIT 1");
+            $stmt->execute();
+
+            $result = $stmt->fetchObject();
+
+            $arrayName = array(
+                'coin' => $result->coin,
+                'crystal' => $result->crystal,
+                'point' => $result->point
+                ); 
+            return $arrayName;
         }
 
     } 

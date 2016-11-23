@@ -6,22 +6,6 @@
 
         public function __construct() { }
 
-        /*
-        public function __construct($id, $userId, $friendId, $regDate)
-        {
-            $this->id = $id;
-            $this->userId = $userId;
-            $this->friendId = $friendId;
-            $this->regDate = $regDate;
-        } 
-        
-        public function __construct($userId, $friendId, $regDate)
-        {
-            $this->userId = $userId;
-            $this->friendId = $friendId;
-            $this->regDate = $regDate;
-        } 
-*/
        
         public function showInfo(){
             echo '<p>'. $this->id .' : '. $this->userId .' : '. $this->friendId .' : '. $this->regDate .'</p>'; 
@@ -36,5 +20,15 @@
                 return $obj;
         }
 
+        public static function getAll($userId)
+        {
+            $conn = db::connect();
+            $result = -1;
+            $stmt = $conn->query("SELECT friendId FROM Friend WHERE Friend.userId = '$userId' ORDER BY regDate DESC LIMIT 1");
+            $stmt->execute();
+
+            $result = $stmt->fetchObject(); 
+            return $result->friendId;
+        }
     } 
 ?>

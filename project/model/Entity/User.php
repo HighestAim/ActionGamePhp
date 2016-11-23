@@ -34,11 +34,22 @@ class User{
         
         public static function loadFromDB()
         {
-                $conn = db::connect();
-                $stmt = $conn->query("select * from " . get_class($this));
-                $obj = $stmt->fetchALL(PDO::FETCH_CLASS, get_class($this)); 
-                
-                return $obj;
+            $conn = db::connect();
+            $stmt = $conn->query("select * from " . get_class($this));
+            $obj = $stmt->fetchALL(PDO::FETCH_CLASS, get_class($this)); 
+            
+            return $obj;
+        }
+
+        public static function getAll($userId)
+        {
+            $conn = db::connect();
+            $result = -1;
+            $stmt = $conn->query("SELECT name FROM User WHERE User.id = '$userId' ORDER BY regDate DESC LIMIT 1");
+            $stmt->execute();
+
+            $result = $stmt->fetchObject(); 
+            return $result->name;
         }
     } 
 ?>

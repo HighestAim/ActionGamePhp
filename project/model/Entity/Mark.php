@@ -7,23 +7,6 @@
 
         public function __construct() { }
 
-     /*   public function __construct($id, $level, $score, $userId, $regDate)
-        {
-            $this->id = $id;
-            $this->level = $level;
-            $this->score = $score;
-            $this->userId = $userId;
-            $this->regDate = $regDate;
-        } 
-        
-        public function __construct($level, $score, $userId, $regDate)
-        {
-            $this->level = $level;
-            $this->score = $score;
-            $this->userId = $userId;
-            $this->regDate = $regDate;
-        } */
-
         public function showInfo(){
             echo '<p>'. $this->id .' : '. $this->level .' : '. $this->score .' : '. $this->userId .' : '. $this->regDate .'</p>'; 
         } 
@@ -37,5 +20,20 @@
                 return $obj;
         }
 
+        public static function getAll($userId)
+        {
+            $conn = db::connect();
+            $arrayName = -1;
+            $stmt = $conn->query("SELECT score, level FROM Mark WHERE Mark.userId = '$userId' ORDER BY regDate DESC LIMIT 1");
+            $stmt->execute();
+
+            $result = $stmt->fetchObject(); 
+            echo '<br>'."Mark->".$result->score."-".$result->level.'<br>';
+            $arrayName = array(
+                'score' => $result->score,
+                'level' => $result->level
+                ); 
+            return $arrayName;
+        }
     } 
 ?>
