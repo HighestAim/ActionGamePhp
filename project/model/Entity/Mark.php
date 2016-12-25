@@ -28,7 +28,6 @@
             $stmt->execute();
 
             $result = $stmt->fetchObject(); 
-            echo '<br>'."Mark->".$result->score."-".$result->level.'<br>';
             $arrayName = array(
                 'score' => $result->score,
                 'level' => $result->level

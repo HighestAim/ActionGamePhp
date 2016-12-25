@@ -82,23 +82,23 @@ function firstRegistration($login,$password,$name, $friendLogin){
 			$result = $stmt->execute();
 				if ($result === false) {
 					# code...
-					echo "im here";
+					//echo "im here";
 					echo $result;
 					//echo $login.$password.$name;
 					//echo "Can't write on base";
 				}
 				else{
 					$friendId = getIdFromLogin($friendLogin);
-					echo $friendId;
+				//	echo $friendId;
 					$userId = getIdFromLogin($login);
-					echo $userId;
+				//	echo $userId;
 					
 					if($friendId != -1 && $userId != -1)
 						{
-							echo registerFriendId($userId, $friendId);
+							registerFriendId($userId, $friendId);
 						}
 
-					echo "Embatooo!";
+				//	echo "Embatooo!";
 					$json_data = array ('login'=>$login,'password'=>$password,"name"=>$name);
 					$jsonEncode = json_encode($json_data);
 					echo $jsonEncode;
@@ -139,7 +139,7 @@ function  getIdFromLogin($login){
 		}
 	}
 
-	echo "getIdFromLogin = ".$id;
+	//echo "getIdFromLogin = ".$id;
 
 		return $id;
 } 
@@ -170,11 +170,11 @@ function addCrystalCoinPoint($login,$coin,$cristal,$point){
 
 				if ($result === false) {
 					# code...
-					echo "im here";
+		//			echo "im here";
 					echo $result;
 				}
 				else{
-						echo "Embatooo!";
+			//			echo "Embatooo!";
 						$json_data = array ('login'=>$login,"coin"=>$coin,"crystal"=>$cristal,"point"=>$point);
 						$jsonEncode = json_encode($json_data);
 						echo $jsonEncode;
@@ -209,11 +209,11 @@ function addLevelScore($login,$level,$score){
 
 				if ($result === false) {
 					# code...
-					echo "im here";
+			//		echo "im here";
 					echo $result;
 				}
 				else{
-						echo "Embatooo!";
+			//			echo "Embatooo!";
 						$json_data = array ('login'=>$login,"level"=>$level,"score"=>$score);
 						$jsonEncode = json_encode($json_data);
 						echo $jsonEncode;
